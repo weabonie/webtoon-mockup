@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -10,6 +11,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ title }) => {
     <View style={styles.container}>
 
       <Text style={styles.title}>{title}</Text>
+      <Ionicons size={28} name='search'></Ionicons>
 
     </View>
   );
@@ -17,6 +19,12 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ title }) => {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    zIndex: 1000, // Makes sure it's on top
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

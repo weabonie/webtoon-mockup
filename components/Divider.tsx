@@ -10,7 +10,7 @@ interface DividerProps {
 const Divider: React.FC<DividerProps> = ({
   color = '#ccc', // Default color
   thickness = 1,  // Default thickness
-  marginVertical = 10,  // Default vertical margin
+  marginVertical = 5,  // Default vertical margin
 }) => {
   return <View style={[styles.divider, { backgroundColor: color, height: thickness, marginVertical }]} />;
 };

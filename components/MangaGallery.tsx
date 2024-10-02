@@ -41,30 +41,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "visible",
-    paddingVertical: 20, // Add some padding for the scroll
+    marginTop: 5,
+    paddingVertical: 5, // Add some padding for the scroll
   },
   card: {
     width: width * 0.35, // Each card takes 60% of the screen width
     marginHorizontal: 5, // Spacing between cards
-    paddingBottom: 10,
+    // paddingBottom: 10,
     backgroundColor: '#fff',
-    // borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 3, // Android shadow
   },
   image: {
     width: '100%',
     height: 200, // Set a fixed height for the manga cover
-    // borderTopLeftRadius: 10,
-    // borderTopRightRadius: 10,
+    borderRadius: 10,
     resizeMode: 'cover', // Make sure the image covers the area
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginTop: 10,
     marginVertical: 5,
     marginHorizontal: 10,
   },

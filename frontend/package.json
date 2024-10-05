@@ -3,6 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
@@ -15,6 +16,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@babel/runtime": "^7.25.7",
     "@expo-google-fonts/dev": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.1.18",

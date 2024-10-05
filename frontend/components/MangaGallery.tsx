@@ -1,7 +1,9 @@
+import { Href, useRouter } from 'expo-router';
 import React from 'react';
-import { View, FlatList, Image, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, FlatList, Image, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
 interface Manga {
+  id: string;
   title: string;
   author: string;
   imageUrl: string;
@@ -14,12 +16,18 @@ interface MangaGalleryProps {
 const { width } = Dimensions.get('window'); // Get the screen width for responsive design
 
 const MangaCard: React.FC<{ manga: Manga }> = ({ manga }) => {
+  const router = useRouter()
+
+  const navigateToManga = () => {
+    router.push("/manga/" + manga.id as Href<string>);
+  }
+
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={navigateToManga}>
       <Image source={{ uri: manga.imageUrl }} style={styles.image} />
       <Text style={styles.title}>{manga.title}</Text>
       <Text style={styles.author}>{manga.author}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

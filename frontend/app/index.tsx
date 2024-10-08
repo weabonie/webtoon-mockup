@@ -139,9 +139,9 @@ export default function Index() {
             <Text style={styles.sortHeader}>Recommended for you</Text>
           </View>
 
-          <MangaGallery
+          {/* <MangaGallery
             mangaList={mangaList.get("challengeHomeRecommendTitleList")}
-          ></MangaGallery>
+          ></MangaGallery> */}
         </ScrollView>
       </SafeAreaView>
     </SafeAreaView>

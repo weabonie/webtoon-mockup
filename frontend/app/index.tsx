@@ -1,7 +1,9 @@
 import HorizontalScrollGallery from "@/components/HorizontalScrollGallery";
 import HeaderBar from "@/components/navigation/HeaderBar";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import axios from "axios";
 
 import {
   useFonts,
@@ -9,10 +11,24 @@ import {
   Raleway_600SemiBold,
   Raleway_700Bold,
 } from "@expo-google-fonts/dev";
+
 import MangaGallery from "@/components/MangaGallery";
 import Divider from "@/components/Divider";
 import GenreGrid from "@/components/GenreGrid";
-import sampleManga from "@/constants/sampleManga.json"
+import sampleManga from "@/constants/sampleManga.json";
+
+import "@/constants/Manga";
+
+import { useEffect, useState } from "react";
+import { MangaInfo } from "@/constants/Manga";
+
+interface MangaApiResponse {
+  message: {
+    result: {
+      [category: string]: MangaInfo[];
+    };
+  };
+}
 
 export default function Index() {
   let [fontsLoaded] = useFonts({
@@ -28,47 +44,100 @@ export default function Index() {
     "https://personacentral.com/wp-content/uploads/2018/09/Persona-5-Manga-Volume-4.jpg",
   ];
 
+  const [mangaList, setMangaList] = useState(new Map());
+
+  const updateManga = (k: string, v: MangaInfo[]) => {
+    setMangaList(new Map(mangaList.set(k, v)));
+  };
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchMangaList = async () => {
+    try {
+      const response = await axios.get<MangaApiResponse>(
+        "http://localhost:3000/manga/home"
+      );
+
+      updateManga(
+        "challengeHomeRecommendTitleList",
+        response.data.message.result.challengeHomeRecommendTitleList
+      );
+
+      console.log(mangaList);
+
+      setLoading(false);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMangaList();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <HeaderBar title="WEBTOON" />
+      {/* <HeaderBar title="WEBTOON" /> */}
+      {/* <FlatList
+        data={[1, 2, 3]}
+        keyExtractor={(item: any) => item.id.toString()}
+        ListEmptyComponent={
+          
+        }
+        renderItem={(item: any) => <Text>{item}</Text>}
+      /> */}
 
-      {/* <HorizontalScrollGallery images={images}></HorizontalScrollGallery> */}
+      <SafeAreaView style={{ flex: 1 }}>
+        <HeaderBar title="WEBTOON" />
 
-      <ScrollView style={{ backgroundColor: "#ffffff", marginTop: 60 }}>
-        <View>
-          <HorizontalScrollGallery images={images}></HorizontalScrollGallery>
-        </View>
+        {/* <HorizontalScrollGallery images={images}></HorizontalScrollGallery> */}
 
-        <View>
-          <Text style={styles.sortHeader}>Trending</Text>
-        </View>
+        <ScrollView style={{ backgroundColor: "#ffffff", marginTop: 0 }}>
+          <View>
+            <HorizontalScrollGallery images={images}></HorizontalScrollGallery>
+          </View>
 
-        <MangaGallery mangas={sampleManga}></MangaGallery>
+          <View>
+            <Text style={styles.sortHeader}>Trending</Text>
+          </View>
 
-        <Divider marginVertical={5} />
+          <MangaGallery
+            mangaList={mangaList.get("challengeHomeRecommendTitleList")}
+          ></MangaGallery>
 
-        <View>
-          <Text style={styles.sortHeader}>New & Upcoming</Text>
-        </View>
+          <Divider marginVertical={5} />
 
-        <MangaGallery mangas={sampleManga}></MangaGallery>
+          <View>
+            <Text style={styles.sortHeader}>New & Upcoming</Text>
+          </View>
 
-        <Divider marginVertical={5} />
+          <MangaGallery
+            mangaList={mangaList.get("challengeHomeRecommendTitleList")}
+          ></MangaGallery>
 
-        <View>
-          <Text style={styles.sortHeader}>Popular Genres</Text>
-        </View>
+          <Divider marginVertical={5} />
 
-        <GenreGrid />
+          <View>
+            <Text style={styles.sortHeader}>Popular Genres</Text>
+          </View>
 
-        <Divider marginVertical={5} />
+          <GenreGrid />
 
-        <View>
-          <Text style={styles.sortHeader}>Recommended for you</Text>
-        </View>
+          <Divider marginVertical={5} />
 
-        <MangaGallery mangas={sampleManga}></MangaGallery>
-      </ScrollView>
+          <View>
+            <Text style={styles.sortHeader}>Recommended for you</Text>
+          </View>
+
+          <MangaGallery
+            mangaList={mangaList.get("challengeHomeRecommendTitleList")}
+          ></MangaGallery>
+        </ScrollView>
+      </SafeAreaView>
     </SafeAreaView>
   );
 }

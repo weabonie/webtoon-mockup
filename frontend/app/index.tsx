@@ -23,11 +23,7 @@ import { useEffect, useState } from "react";
 import { MangaInfo } from "@/constants/Manga";
 
 interface MangaApiResponse {
-  message: {
-    result: {
-      [category: string]: MangaInfo[];
-    };
-  };
+  [category: string]: MangaInfo[];
 }
 
 export default function Index() {
@@ -65,16 +61,16 @@ export default function Index() {
       );
 
       updateManga(
-        "weeklyHotTitleList",
-        response.data.message.result.challengeHomeRecommendTitleList
+        "trending",
+        response.data.trending
       );
 
       updateManga(
-        "challengeHomeRecommendTitleList",
-        response.data.message.result.weeklyHotTitleList
+        "upcoming",
+        response.data.upcoming
       );
 
-      console.log(mangaList);
+      console.log(response.data);
 
       setLoading(false);
     } catch (err) {
@@ -116,7 +112,7 @@ export default function Index() {
           </View>
 
           <MangaGallery
-            mangaList={mangaList.get("challengeHomeRecommendTitleList")}
+            mangaList={mangaList.get("trending")}
           ></MangaGallery>
 
           <Divider marginVertical={5} />
@@ -126,7 +122,7 @@ export default function Index() {
           </View>
 
           <MangaGallery
-            mangaList={mangaList.get("weeklyHotTitleList")}
+            mangaList={mangaList.get("upcoming")}
           ></MangaGallery>
 
           <Divider marginVertical={5} />

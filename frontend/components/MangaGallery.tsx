@@ -21,61 +21,32 @@ interface MangaGalleryProps {
 
 const MangaCard: React.FC<{ manga: any }> = ({ manga }) => {
   const router = useRouter();
-  let mangaInfo = manga.titleInfo;
-
-  if (mangaInfo === undefined) {
-    mangaInfo = manga
-  }
 
   const navigateToManga = () => {
-    router.push(("/manga/" + mangaInfo.titleNo) as Href<string>);
+    router.push(("/manga/" + manga.id) as Href<string>);
   };
 
   const [thumb, setThumb] = useState<string>("");
 
-  // const options = {
-  //   method: "GET",
-  //   url: "https://webtoon-phinf.pstatic.net" + manga.mobileImageUrl,
-  //   headers: {
-      
-  //   },
-  // };
+  const title = manga.title[Object.keys(manga.title)[0]];
 
-  function loadImage() {
-    // {
-    //   method: "GET",
-    //   // referrer: "http://m.webtoons.com/",
-    //   headers: {
-        
-    //   }
-    // }
+  useEffect(() => {}, []);
 
-    // axios.get("https://webtoon-phinf.pstatic.net" + manga.mobileImageUrl, {
-    //   headers: {
-    //     "Referer": "http://m.webtoons.com/",
-    //     "User-Agent": "Mozilla/5.0 (Linux; Android 8.1.0; Mi MIX 2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Mobile Safari/537.36"
-    //   }
-    // }).then((res) => {
-    //   console.log(res)
-    // }) 
-  }
-  
-  useEffect(() => {
-    loadImage()
-  }, []);
-
-  console.log(manga)
+  console.log(manga);
 
   return (
     <TouchableOpacity style={styles.card} onPress={navigateToManga}>
-      <Image
+      {/* <Image
         source={{
           uri: "https://webtoon-phinf.pstatic.net/" + manga.mobileImageUrl,
         }}
         style={styles.image}
-      />
-      <Text style={styles.title}>{mangaInfo.title}</Text>
-      <Text style={styles.author}>{mangaInfo.writingAuthorName}</Text>
+      /> */}
+      <Text style={styles.title}>{title}</Text>
+
+      {manga.authors[0].cached && (
+        <Text style={styles.author}>{manga.authors[0].cachedData.name}</Text>
+      )}
     </TouchableOpacity>
   );
 };

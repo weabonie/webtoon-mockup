@@ -30,6 +30,7 @@ export async function showHome(req: Request, res: Response) {
       order: {
         rating: "desc",
       },
+      includes: ["author"]
     });
 
     const now = new Date();
@@ -44,6 +45,7 @@ export async function showHome(req: Request, res: Response) {
       order: {
         rating: "desc",
       },
+      includes: ["author"]
     });
 
     res.send({

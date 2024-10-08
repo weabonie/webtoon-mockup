@@ -30,7 +30,7 @@ export async function showHome(req: Request, res: Response) {
       order: {
         rating: "desc",
       },
-      includes: ["author"]
+      includes: ["author", "cover_art"]
     });
 
     const now = new Date();
@@ -45,8 +45,10 @@ export async function showHome(req: Request, res: Response) {
       order: {
         rating: "desc",
       },
-      includes: ["author"]
+      includes: ["author", "cover_art"]
     });
+
+    console.log("cached")
 
     res.send({
       trending: trendingMangas,

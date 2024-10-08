@@ -19,9 +19,13 @@ interface MangaGalleryProps {
   title: string;
 }
 
-const MangaCard: React.FC<{ manga: MangaInfo }> = ({ manga }) => {
+const MangaCard: React.FC<{ manga: any }> = ({ manga }) => {
   const router = useRouter();
-  const mangaInfo = manga.titleInfo;
+  let mangaInfo = manga.titleInfo;
+
+  if (mangaInfo === undefined) {
+    mangaInfo = manga
+  }
 
   const navigateToManga = () => {
     router.push(("/manga/" + mangaInfo.titleNo) as Href<string>);
@@ -59,6 +63,8 @@ const MangaCard: React.FC<{ manga: MangaInfo }> = ({ manga }) => {
   useEffect(() => {
     loadImage()
   }, []);
+
+  console.log(manga)
 
   return (
     <TouchableOpacity style={styles.card} onPress={navigateToManga}>

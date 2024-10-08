@@ -1,35 +1,38 @@
 import { Request, Response } from "express";
+import { Manga } from "mangadex-full-api";
 
-const axios = require('axios');
-const dotenv = require('dotenv');
+const axios = require("axios");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
-const options = {
-  method: 'GET',
-  url: 'https://webtoon.p.rapidapi.com/canvas/home',
-  params: {language: 'en'},
-  headers: {
-    'x-rapidapi-key': process.env.WEBTOONKEY,
-    'x-rapidapi-host': 'webtoon.p.rapidapi.com'
-  }
-};
-
-console.log(process.env.WEBTOONKEY)
-
-export interface SearchQuery {
-    startIndex:  number,
-    query: string,
-    pageSize: number,
-    language: string
-}
+// const options = {
+//   method: 'GET',
+//   url: 'https://webtoon.p.rapidapi.com/canvas/home',
+//   params: {language: 'en'},
+//   headers: {
+//     'x-rapidapi-key': process.env.WEBTOONKEY,
+//     'x-rapidapi-host': 'webtoon.p.rapidapi.com'
+//   }
+// };
+// console.log(process.env.WEBTOONKEY)
 
 export async function showHome(req: Request, res: Response) {
-    try {
-        const response = await axios.request(options);
-        res.send(response.data)
-    } catch (error) {
-        console.error(error);
-        res.send("Error")
-    }
+  try {
+    const currentYear = new Date().getFullYear();
+    const firstDayOfYear = new Date(currentYear, 0, 1); // January is month 0
+
+    const mangas = await Manga.search({
+      limit: 15,
+      hasAvailableChapters: true,
+      createdAtSince: firstDayOfYear.toISOString().slice(0, 19),
+      order: {
+        rating: "desc",
+      },
+    });
+    res.send(mangas);
+  } catch (error) {
+    console.error(error);
+    res.send("Error");
+  }
 }

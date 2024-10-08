@@ -50,18 +50,28 @@ export default function Index() {
     setMangaList(new Map(mangaList.set(k, v)));
   };
 
+  
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchMangaList = async () => {
+    // updateManga("challengeHomeRecommendTitleList", []);
+    // updateManga("weeklyHotTitleList", []);
+
     try {
       const response = await axios.get<MangaApiResponse>(
-        "http://localhost:3000/manga/home"
+        "http://64.23.139.105:3000/manga/home"
+      );
+
+      updateManga(
+        "weeklyHotTitleList",
+        response.data.message.result.challengeHomeRecommendTitleList
       );
 
       updateManga(
         "challengeHomeRecommendTitleList",
-        response.data.message.result.challengeHomeRecommendTitleList
+        response.data.message.result.weeklyHotTitleList
       );
 
       console.log(mangaList);
@@ -92,13 +102,13 @@ export default function Index() {
       /> */}
 
       <SafeAreaView style={{ flex: 1 }}>
-        <HeaderBar title="WEBTOON" />
+        <HeaderBar title="TOKYO MANGA" />
 
         {/* <HorizontalScrollGallery images={images}></HorizontalScrollGallery> */}
 
         <ScrollView style={{ backgroundColor: "#ffffff", marginTop: 0 }}>
           <View>
-            <HorizontalScrollGallery images={images}></HorizontalScrollGallery>
+            {/* <HorizontalScrollGallery images={images}></HorizontalScrollGallery> */}
           </View>
 
           <View>
@@ -116,7 +126,7 @@ export default function Index() {
           </View>
 
           <MangaGallery
-            mangaList={mangaList.get("challengeHomeRecommendTitleList")}
+            mangaList={mangaList.get("weeklyHotTitleList")}
           ></MangaGallery>
 
           <Divider marginVertical={5} />
